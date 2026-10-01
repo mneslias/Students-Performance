@@ -145,7 +145,7 @@ Le test t comparant les notes finales des deux matières donne `p = 2,215 × 10�
 
 ## Pistes d’approfondissement
 
-Les supports proposent notamment de :
+Il serait intéressant de mener cette étude aujourd'hui pour voir si les facteurs de réussite trouvés restent les mêmes 20 après. Pour cela, voici quelques pistent qui pourraient contribuer à améliorer l'étude :
 
 1. élargir l’échantillon à plusieurs régions et établissements ;
 2. répéter l’étude pour mesurer l’évolution 20 ans après;
