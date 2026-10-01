@@ -2,7 +2,7 @@
 
 Analyse exploratoire et tableau de bord consacrés à la réussite scolaire dans deux lycées portugais, à partir des résultats en mathématiques et en portugais. Le projet combine un notebook Python, deux fichiers CSV d’origine et un rapport Power BI.
 
-> **Statut :** analyse exploratoire/documentation — aucune modélisation prédictive n’est implémentée dans le notebook fourni.
+> **Statut :** analyse exploratoire/documentation
 
 ## Sommaire
 
@@ -13,7 +13,6 @@ Analyse exploratoire et tableau de bord consacrés à la réussite scolaire dans
 - [Méthodologie](#méthodologie)
 - [Résultats et insights](#résultats-et-insights)
 - [Technologies](#technologies)
-- [Reproduire l’analyse](#reproduire-lanalyse)
 - [Limites et points de vigilance](#limites-et-points-de-vigilance)
 - [Pistes d’approfondissement](#pistes-dapprofondissement)
 
@@ -31,14 +30,14 @@ La « réussite » est définie dans le notebook par `G3 >= 10`. La valeur `G3 =
 
 ## Contexte et sources
 
-Les supports fournis présentent les données comme issues de l’étude de **P. Cortez et A. Silva (2008)**, Université du Minho, sur deux lycées publics de la région de l’Alentejo, pour l’année scolaire **2005–2006**. Les données associent des réponses à un questionnaire et des résultats issus des bulletins scolaires.
+Les données sont issues de l’étude de **P. Cortez et A. Silva (2008)**, Université du Minho, sur deux lycées publics de la région de l’Alentejo, pour l’année scolaire **2005–2006**. Les données associent des réponses à un questionnaire et des résultats issus des bulletins scolaires.
 
 Les fichiers locaux contiennent :
 
 - `student-mat.csv` : 395 lignes et 33 colonnes pour la matière mathématiques ;
 - `student-por.csv` : 649 lignes et 33 colonnes pour la matière portugais.
 
-Les deux fichiers ne représentent pas nécessairement exactement les mêmes élèves : le notebook effectue donc une fusion externe (`outer`) sur un ensemble de caractéristiques communes, et non sur un identifiant source explicitement fourni.
+Les deux fichiers ne représentent pas nécessairement exactement les mêmes élèves : le notebook effectue donc une fusion externe (`outer`) sur un ensemble de caractéristiques communes, indiqués dans la notice du CSV, et non sur un identifiant source explicitement fourni.
 
 ## Fichiers
 
@@ -126,8 +125,6 @@ Le test t comparant les notes finales des deux matières donne `p = 2,215 × 10�
 - **Sexe :** en mathématiques, 9,97 pour les filles contre 10,91 pour les garçons (`p = 0,0396`) ; en portugais, 12,25 contre 11,41 (`p = 0,0011`).
 - **Personas de motivation :** la sortie indique notamment 9,31 pour les élèves « motivés en difficulté » contre 2,37 pour les « démotivés » en mathématiques (`p` affichée à 0), tandis que la comparaison entre « pas motivé en réussite » et « motivé » en mathématiques affiche `p = 0,1483`.
 
-Ces comparaisons doivent être lues avec prudence : les tailles de groupes, la construction de la fusion et la non-indépendance possible des observations peuvent influencer les résultats.
-
 ## Technologies
 
 - **Python** : langage d’analyse ;
@@ -137,51 +134,23 @@ Ces comparaisons doivent être lues avec prudence : les tailles de groupes, la c
 - **SciPy** : tests t de Welch ;
 - **Power BI** : rapport fourni (`.pbix`) et exploration visuelle.
 
-L’inspection ZIP/XML du PBIX confirme un rapport contenant **7 pages**, un thème personnalisé et des visuels personnalisés de type box-and-whisker. Les métadonnées seules ne permettent pas de documenter de manière fiable le détail de chaque mesure, relation, filtre ou visuel ; ces éléments ne sont donc pas décrits ici comme des faits établis.
-
-## Reproduire l’analyse
-
-1. Placer `student-mat.csv` et `student-por.csv` dans le même répertoire que le notebook, ou adapter les chemins `/content/...` présents dans les cellules.
-2. Installer les dépendances :
-
-   ```bash
-   pip install pandas numpy matplotlib seaborn scipy jupyter
-   ```
-
-3. Ouvrir puis exécuter `Notebook_final.ipynb` de haut en bas :
-
-   ```bash
-   jupyter notebook Notebook_final.ipynb
-   ```
-
-4. Vérifier les sorties statistiques et la génération de `data_final.csv`.
-5. Ouvrir le fichier PBIX avec une version compatible de Power BI Desktop si le tableau de bord doit être consulté.
-
-Pour une reproductibilité robuste, il est recommandé de fixer les versions Python/packages et de remplacer les chemins absolus par des chemins relatifs au projet.
-
 ## Limites et points de vigilance
 
 - **Représentativité :** l’étude porte sur deux établissements d’une région et sur des données anciennes (2005–2006). Les résultats ne sont pas généralisables à l’ensemble du Portugal ni aux élèves actuels.
 - **Fusion sans identifiant source :** la clé composite est construite après une fusion sur des attributs communs. Le notebook signale trois valeurs dupliquées pour cette clé ; l’unicité d’un élève ne peut donc pas être garantie.
 - **Échantillons différents :** les effectifs mathématiques et portugais diffèrent (395 contre 649). La comparaison des matières n’est pas nécessairement appariée élève par élève.
 - **Variables auto-déclarées et notes scolaires :** plusieurs facteurs viennent d’un questionnaire, tandis que les notes sont des évaluations d’enseignants ; les biais de mesure et de déclaration sont possibles.
-- **Abandons :** `G3 == 0` est interprété comme « Abandon » selon le notebook. Cette convention doit être confirmée par la documentation originale avant toute décision métier.
-- **Tests multiples :** de nombreux tests t sont exécutés sans correction explicitement appliquée pour comparaisons multiples et sans intervalle de confiance ni taille d’effet.
-- **Anomalies de code :** les cellules 60 et 61 affichent des tests sur les absences mais réutilisent les variables `motive` et `demotive` au lieu de `abs_motiv`, `abs_demo`, `abs_MF` et `abs_MR` dans l’appel au test. Les p-values et conclusions correspondantes ne doivent pas être utilisées sans correction et réexécution. Les cellules 44 et 45 contiennent aussi une expression d’affichage mal formée autour de l’arrondi de la p-value.
+- **Abandons :** `G3 == 0` est interprété comme « Abandon ». Cette convention doit être confirmée.
 - **Personas heuristiques :** les catégories de motivation sont des règles d’interprétation définies dans le notebook, pas une mesure validée psychométriquement.
-- **PBIX :** le fichier est binaire et son modèle interne n’a pas été interprété exhaustivement ; les détails non vérifiables ne sont pas affirmés dans ce README.
-- **Données sensibles :** les variables décrivent des caractéristiques scolaires, familiales, sociales et de santé. Éviter toute ré-identification, diffusion inutile ou décision individuelle automatisée.
 
 ## Pistes d’approfondissement
 
 Les supports proposent notamment de :
 
 1. élargir l’échantillon à plusieurs régions et établissements ;
-2. répéter l’étude pour mesurer l’évolution sur environ 20 ans ;
-3. actualiser les usages numériques (temps d’écran, smartphone, réseaux sociaux, IA, apprentissage en ligne) ;
+2. répéter l’étude pour mesurer l’évolution 20 ans après;
+3. actualiser avec les usages numériques (temps d’écran, smartphone, réseaux sociaux, IA, apprentissage en ligne) ;
 4. ajouter le sommeil, la santé mentale, le stress et le projet professionnel.
-
-Avant toute modélisation, il serait également pertinent de définir un identifiant ou une règle d’appariement documentée, corriger les cellules de tests statistiques, distinguer clairement les observations appariées des observations indépendantes et ajouter des contrôles de qualité automatisés.
 
 ## Références
 
