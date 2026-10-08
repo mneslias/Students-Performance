@@ -155,4 +155,3 @@ Il serait intéressant de mener cette étude aujourd'hui pour voir si les facteu
 ## Références
 
 - P. Cortez et A. Silva (2008), étude sur la performance scolaire au Portugal, citée dans les supports fournis.
-- Fichiers et résultats inspectés dans ce dépôt : `student-mat.csv`, `student-por.csv`, `Notebook_final.ipynb`, `Reussite_scolaire.pptx` et `Reussite scolaire au Portugal.pbix`.
